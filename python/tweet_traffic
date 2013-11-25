@@ -1,0 +1,16 @@
+#!/bin/sh
+dir="$(dirname $0)"
+
+Xvfb :99 -ac 2>/dev/null &
+export DISPLAY=:24
+killall firefox 2>/dev/null
+output=`$dir/optus_traffic.py $dir/ACCOUNT`
+echo $output
+killall firefox 
+
+notification=$(date | grep '09:..:..')
+if [ -z $notification ]; then
+    $dir/tweet.py "$output" 
+else
+    $dir/tweet.py "$output @liujinyu @cissygao" 
+fi
