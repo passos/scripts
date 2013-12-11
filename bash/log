@@ -1,0 +1,2 @@
+#!/bin/bash
+tail -fn ${@-120} /var/log/nginx/error.log | logfilter
