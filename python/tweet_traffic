@@ -2,7 +2,7 @@
 dir="$(dirname $0)"
 
 Xvfb :99 -ac 2>/dev/null &
-export DISPLAY=:24
+export DISPLAY=:99
 killall firefox 2>/dev/null
 output=`$dir/optus_traffic.py $dir/ACCOUNT`
 echo $output

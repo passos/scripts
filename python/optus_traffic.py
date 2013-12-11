@@ -16,26 +16,24 @@ finally:
     f.close()
 
 # get the optus traffic information
+browser = webdriver.Firefox() 
 try:
-    browser = webdriver.Firefox() 
-    browser.get("https://www.optus.com.au/customercentre/myaccountlogin")
-    assert "My Account" in browser.title
+    browser.get("https://memberservices.optuszoo.com.au/ms/usagemeter/currentmonthdslbroadbandusagemeter.htm")
 
     browser.find_element_by_name("j_username").send_keys(username)
     browser.find_element_by_name("j_password").send_keys(password + Keys.RETURN)
     time.sleep(3)
-    assert "My services" in browser.title
+    assert "Member Services" in browser.title
 
     try:
-       status = browser.find_element_by_xpath("//p[@class='remainStatus']").text
-       #total = browser.find_element_by_xpath("//div[@class='total']").text
-       #remain = browser.find_element_by_xpath("//div[@class='remaining']").text
+       status = browser.find_elements_by_xpath("//td[@class='label']")
+       if len(status) > 1:
+           print status[0].text.replace("\n", "")
+           print status[1].text.replace("\n", "")
     except NoSuchElementException as e:
        assert 0, "load page error: " + str(e)
        exit(0)
 
-    print status
-    #print "remain:%s total:%s" % (remain, total)
 finally:
     browser.close()
     browser.quit()
