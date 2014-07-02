@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -e
+
+here=`pwd`
+target=`dirname "$filename"`
+cd $target
+target_dir=`pwd`
+cd "$here"
+
+while [ ! -f "$target_dir/.tags" -a "$target_dir" != "/" ];
+do
+  target_dir=`dirname "$target_dir"`
+done
+
+if [ -f "$target_dir/.tags" ]; then
+  cd "$target_dir"
+  bash .tags
+fi

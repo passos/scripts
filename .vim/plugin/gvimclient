@@ -1,0 +1,40 @@
+#!/bin/sh
+
+set -e
+
+if [ $# -lt 1 ]; then
+    echo Usage: gvimclient filename
+else
+    for i in "$@"
+    do
+        if [ ! -f "$i" ]; then
+            continue
+        fi
+
+        filename="$i"
+        here=`pwd`
+        target=`dirname "$filename"`
+        cd $target
+        target_dir=`pwd`
+        cd "$here"
+
+        while [ ! -f "$target_dir/.PROJECT_NAME" -a "$target_dir" != "/" ];
+        do
+            target_dir=`dirname "$target_dir"`
+        done
+
+        if [ -f "$target_dir/.PROJECT_NAME" ]; then
+            project_name=`cat "$target_dir/.PROJECT_NAME"`
+        else
+            project_name="NO PROJECT"
+        fi
+
+        if [ -f "$target_dir/.vimrc" ]; then
+            gvim -u "$target_dir/.vimrc" \
+                --servername "$project_name" \
+                --remote-silent "$i"
+        else
+            gvim --servername "$project_name" --remote-silent "$i"
+        fi
+    done
+fi
