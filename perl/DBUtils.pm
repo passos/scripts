@@ -31,8 +31,7 @@ use Log::Log4perl;
 Log::Log4perl->wrapper_register(__PACKAGE__);
 
 sub begin_work {
-    start_transaction();
-    my $result = get_dbh()->start_work();
+    my $result = get_dbh()->begin_work();
     if ($result) {
         DEBUG '[', caller, "] start mysql transaction";
     }
@@ -51,7 +50,6 @@ sub commit {
         ERROR '[', caller, "] commit mysql transaction error: ", get_dbh()->errstr;
     }
     
-    end_transaction();
     return $result;
 }
 
@@ -64,7 +62,6 @@ sub rollback {
         ERROR '[', caller, "] rollback mysql transaction error: ", get_dbh()->errstr;
     }
     
-    end_transaction();
     return $result;
 }
 
