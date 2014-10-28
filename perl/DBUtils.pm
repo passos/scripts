@@ -27,6 +27,44 @@ use Log;
 use Log::Log4perl;
 Log::Log4perl->wrapper_register(__PACKAGE__);
 
+sub begin_work {
+    start_transaction();
+    my $result = get_dbh()->start_work();
+    if ($result) {
+        DEBUG "start mysql transaction";
+    }
+    else {
+        ERROR "start mysql transaction error: ", get_dbh()->errstr;
+    }
+    return $result;
+}
+
+sub commit {
+    my $result = get_dbh()->commit();
+    if ($result) {
+        DEBUG "commit mysql transaction";
+    }
+    else {
+        ERROR "commit mysql transaction error: ", get_dbh()->errstr;
+    }
+    
+    end_transaction();
+    return $result;
+}
+
+sub rollback {
+    my $result = get_dbh()->rollback();
+    if ($result) {
+        DEBUG "rollback mysql transaction";
+    }
+    else {
+        ERROR "rollback mysql transaction error: ", get_dbh()->errstr;
+    }
+    
+    end_transaction();
+    return $result;
+}
+
 sub clean_sql {
     my ( $sql ) = @_;
     (WARN "empty SQL: $sql" and return '') if (not $sql or $sql =~ /^\s*$/ );
