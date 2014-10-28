@@ -34,10 +34,10 @@ sub begin_work {
     start_transaction();
     my $result = get_dbh()->start_work();
     if ($result) {
-        DEBUG "start mysql transaction";
+        DEBUG '[', caller, "] start mysql transaction";
     }
     else {
-        ERROR "start mysql transaction error: ", get_dbh()->errstr;
+        ERROR '[', caller, "] start mysql transaction error: ", get_dbh()->errstr;
     }
     return $result;
 }
@@ -45,10 +45,10 @@ sub begin_work {
 sub commit {
     my $result = get_dbh()->commit();
     if ($result) {
-        DEBUG "commit mysql transaction";
+        DEBUG '[', caller, "] commit mysql transaction";
     }
     else {
-        ERROR "commit mysql transaction error: ", get_dbh()->errstr;
+        ERROR '[', caller, "] commit mysql transaction error: ", get_dbh()->errstr;
     }
     
     end_transaction();
@@ -58,10 +58,10 @@ sub commit {
 sub rollback {
     my $result = get_dbh()->rollback();
     if ($result) {
-        DEBUG "rollback mysql transaction";
+        DEBUG '[', caller, "] rollback mysql transaction";
     }
     else {
-        ERROR "rollback mysql transaction error: ", get_dbh()->errstr;
+        ERROR '[', caller, "] rollback mysql transaction error: ", get_dbh()->errstr;
     }
     
     end_transaction();
