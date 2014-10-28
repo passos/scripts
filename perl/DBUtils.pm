@@ -4,6 +4,9 @@ require Exporter;
 @ISA =  qw(Exporter);
 
 @EXPORT = @EXPORT_OK = qw(
+    begin_work
+    commit
+    rollback
     prepare_stat 
     exec_sql 
     exec_stat 
