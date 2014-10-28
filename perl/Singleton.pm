@@ -4,7 +4,7 @@ require Exporter;
 @ISA =  qw(Exporter);
 
 @EXPORT = @EXPORT_OK = qw(
-    set_dbh get_dbh get_cache get_cgi start_transaction end_transaction
+    set_dbh get_dbh get_cache get_cgi start_transaction end_transaction is_in_transaction
 );
 
 use strict;
@@ -29,6 +29,10 @@ sub start_transaction {
 
 sub end_transaction {
     $is_in_transaction = 0;
+}
+
+sub is_in_transaction {
+    return $is_in_transaction;
 }
 
 sub connect_db {
